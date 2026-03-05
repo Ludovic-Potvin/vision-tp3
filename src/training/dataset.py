@@ -2,17 +2,11 @@ import torch
 from torch.utils.data import random_split
 
 import torchvision
-import torchvision.transforms as transforms
 
 from config import DATASET_DISTRIBUTION, DATASET_PATH, SEED
 
-TRANSFORM = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
-    ])
 
-def get_sets():
+def get_sets(transform):
     """
     Import the dataset and return train, validation and test sets.
 
@@ -25,7 +19,7 @@ def get_sets():
     """
     dataset = torchvision.datasets.ImageFolder(
         root=DATASET_PATH,
-        transform=TRANSFORM,
+        transform=transform,
     )
 
     class_number = len(list(dataset.classes))
@@ -37,5 +31,5 @@ def get_sets():
     train_set, validation_set, test_set = random_split(
         dataset, DATASET_DISTRIBUTION, generator=generator
     )
-    
+
     return train_set, validation_set, test_set
