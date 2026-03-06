@@ -12,14 +12,14 @@ def train_model(model_info: ModelInfo):
     exec_training_process(
         device,
         model=model_info.model,
-        weights=model_info.weights,
         mean=model_info.mean,
         std=model_info.std,
     )
 
 
 def main():
-    train_model(finetuning)
+    model = train_model(finetuning)
+    print(model)
     # train_model(device, FineTuning.model, FineTuning.transform)
 
 

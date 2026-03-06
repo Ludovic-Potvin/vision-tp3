@@ -5,21 +5,10 @@ from training.setup import setup_loader, setup_transform
 from training.dataset import get_sets
 from training.train_process import train_model
 
-from config import LEARNING_RATE, EPOCH_NUMBER
+from config import LEARNING_RATE
 
 
-SCORE_COLUMNS = [
-    "Loss",
-    "Accuracy",
-    "Balanced Accuracy",
-    "F1-score",
-    "Kappa",
-    "Top 2 Accuracy",
-    "Top 3 Accuracy",
-]
-
-
-def exec_training_process(device, model, weights, mean, std):
+def exec_training_process(device, model, mean, std):
     transform = setup_transform(mean, std)
     train_set, validation_set, test_set = get_sets(transform)
 
@@ -29,7 +18,7 @@ def exec_training_process(device, model, weights, mean, std):
     test_loader = setup_loader(test_set)
 
     # loss function
-    loss_function = nn.CrossEntropyLoss(weight=weights)
+    loss_function = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE)
 
     model.to(device)
