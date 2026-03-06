@@ -1,12 +1,11 @@
-import torch
-
 from torchvision import models
-import torchvision.transforms as transforms
+from model_info import ModelInfo
 
-class FineTuning():
-    weights = models.ResNet50_Weights.IMAGENET1K_V2
-    model = models.resnet50(weights=weights)
-    mean = weights.transforms().mean
-    std = weights.transforms().std
+weights = models.ResNet50_Weights.IMAGENET1K_V2
 
-
+finetuning = ModelInfo(
+    weights = weights,
+    model = models.resnet50(weights=weights),
+    mean = weights.transforms().mean,
+    std = weights.transforms().std,
+)

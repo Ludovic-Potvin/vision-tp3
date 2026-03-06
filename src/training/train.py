@@ -1,8 +1,13 @@
-from training.loaders import setup_loader
+from torch import nn
+import torch.optim as optim
+
+from training.setup import setup_loader, setup_transform
 from training.dataset import get_sets
 
-def exec_training_process(device, model, transform):
-    transform = setup_transform(mean, std)
+from config import LEARNING_RATE
+
+def exec_training_process(device, model_info):
+    transform = setup_transform(model_info.mean, model_info.std)
     train_set, validation_set, test_set = get_sets(transform)
 
     # Setup loaders
@@ -11,8 +16,10 @@ def exec_training_process(device, model, transform):
     test_loader = setup_loader(test_set)
     
     # loss function
+    loss_function = nn.CrossEntropyLoss(weight=model_info.weights)
+    optimizer = optim.SGD(model_info.model.parameters(), lr=LEARNING_RATE)
     
-    model.to(device)
+    model_info.model.to(device)
 
 def train_model(model):
     pass
