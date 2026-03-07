@@ -1,5 +1,6 @@
 import torch
 import torchvision.transforms as transforms
+from training.dataset import get_sets
 
 from config import BATCH_SIZE
 
@@ -42,3 +43,15 @@ def setup_transform(mean, std):
         ]
     )
     return transform
+
+
+def setup_sets_and_loader(mean, std):
+    transform = setup_transform(mean, std)
+    train_set, validation_set, test_set = get_sets(transform)
+
+    # Setup loaders
+    train_loader = setup_loader(train_set)
+    validation_loader = setup_loader(validation_set, shuffle=False)
+    test_loader = setup_loader(test_set)
+
+    return train_loader, validation_loader, test_loader

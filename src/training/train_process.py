@@ -3,16 +3,16 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 
-from config import EPOCH_NUMBER
+from torch import nn
+import torch.optim as optim
+
+from config import EPOCH_NUMBER, LEARNING_RATE
 
 from sklearn.metrics import (
     accuracy_score,
     balanced_accuracy_score,
     f1_score,
     cohen_kappa_score,
-    top_k_accuracy_score,
-    confusion_matrix,
-    classification_report,
 )
 
 SCORE_COLUMNS = [
@@ -24,12 +24,16 @@ SCORE_COLUMNS = [
 ]
 
 
-def train_model(
-    device, model, train_loader, validation_loader, loss_function, optimizer
-):
+def train_model(device, model, train_loader, validation_loader):
     training_epoch_scores = pd.DataFrame(columns=SCORE_COLUMNS)
     validation_epoch_scores = pd.DataFrame(columns=SCORE_COLUMNS)
 
+    # loss function
+    loss_function = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE)
+
+    # Training loop
+    model.to(device)
     model.train()
     for epoch in range(EPOCH_NUMBER):
         mini_batch_counter = 0

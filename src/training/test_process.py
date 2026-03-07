@@ -6,6 +6,7 @@ def test_model(model, device, test_loader):
     y_true = []
     y_predicted = []
 
+    model.to(device)
     model.eval()
     with torch.no_grad():
         for inputs, labels in test_loader:
