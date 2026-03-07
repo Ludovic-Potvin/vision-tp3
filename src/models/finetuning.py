@@ -7,7 +7,7 @@ weights = models.ResNet50_Weights.IMAGENET1K_V2
 model = models.resnet50(weights=weights)
 model.fc = nn.Linear(2048, 2)
 
-finetuning = ModelInfo(
+FINETUNING = ModelInfo(
     weights = weights,
     model = model,
     mean = weights.transforms().mean,
