@@ -1,3 +1,4 @@
+import plotly.express as px
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -20,8 +21,6 @@ SCORE_COLUMNS = [
     "Balanced Accuracy",
     "F1-score",
     "Kappa",
-    "Top 2 Accuracy",
-    "Top 3 Accuracy",
 ]
 
 
@@ -75,6 +74,7 @@ def train_model(
             validation_loader, model, loss_function, device, validation_epoch_scores
         )
 
+    plot_score_graphs(training_epoch_scores, validation_epoch_scores)
     return model
 
 
@@ -141,8 +141,6 @@ def model_performances(y_true, y_predicted, loss, my_score_df):
     scores.extend([balanced_accuracy_score(y_int_true, y_int_predicted)])
     scores.extend([f1_score(y_int_true, y_int_predicted, average="micro")])
     scores.extend([cohen_kappa_score(y_int_true, y_int_predicted)])
-    scores.extend([top_k_accuracy_score(y_int_true, y_predicted, k=2)])
-    scores.extend([top_k_accuracy_score(y_int_true, y_predicted, k=3)])
     my_score_df.loc[len(my_score_df)] = scores
     return my_score_df
 
@@ -151,3 +149,28 @@ def vec_to_int(y_true, y_predicted):
     y_true = y_true.astype(int)
     y_predicted = np.argmax(y_predicted, axis=1)
     return y_true, y_predicted
+
+def plot_score_graphs(training_epoch_scores, validation_epoch_scores):
+    scores_to_plot = SCORE_COLUMNS
+    for score_type in scores_to_plot:
+        the_df = create_score_df(
+            training_epoch_scores, validation_epoch_scores, score_type
+        )
+        fig = px.line(the_df, x="Epochs", y=score_type, color="Stage")
+        fig.show()
+
+
+def create_score_df(training_epoch_scores, validation_epoch_scores, score_type):
+    train_df = pd.DataFrame(columns=["Epochs", "Stage", score_type])
+    epochs = np.arange(1, training_epoch_scores.shape[0] + 1, 1)
+    stage = ["Train"] * training_epoch_scores.shape[0]
+    train_df["Epochs"] = epochs
+    train_df["Stage"] = stage
+    train_df[score_type] = training_epoch_scores[score_type]
+    validation_df = pd.DataFrame(columns=["Epochs", "Stage", score_type])
+    stage = ["Validation"] * training_epoch_scores.shape[0]
+    validation_df["Epochs"] = epochs
+    validation_df["Stage"] = stage
+    validation_df[score_type] = validation_epoch_scores[score_type]
+    score_df = pd.concat([train_df, validation_df])
+    return score_df
