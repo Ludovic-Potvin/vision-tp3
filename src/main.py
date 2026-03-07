@@ -36,14 +36,17 @@ def test(model, model_info: ModelInfo):
 
 def main():
     print("actions")
-    print("[1]train [2]test")
+    print("[1]train finetuning [2]train CNN [3]test")
 
     choice = input()
     if choice == '1':
         model = train(FINETUNING.model, FINETUNING)
-    if choice == '2':
+    if choice == '3':
+        print("== Fine Tuning Performance ==")
         model = FINETUNING.load(FINETUNING_MODEL)
         test(model, FINETUNING)
+
+        print("== CNN architecture Performance ==")
 
 
 if __name__ == "__main__":
