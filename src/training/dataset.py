@@ -22,11 +22,6 @@ def get_sets(transform):
         transform=transform,
     )
 
-    class_number = len(list(dataset.classes))
-    for class_name in list(dataset.classes):
-        print(class_name)
-    print(f"Class number: {class_number}")
-
     generator = torch.Generator().manual_seed(SEED)
     train_set, validation_set, test_set = random_split(
         dataset, DATASET_DISTRIBUTION, generator=generator

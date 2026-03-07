@@ -1,5 +1,6 @@
 import torch
 
+from config import FINETUNING_MODEL
 from training.setup import setup_sets_and_loader
 from training.train_process import train_model
 from training.test_process import test_model
@@ -15,10 +16,7 @@ def train(model, model_info: ModelInfo):
     )
 
     output_model = train_model(
-        device,
-        model,
-        train_loader,
-        validation_loader,
+        device, model, train_loader, validation_loader, model_info.save
     )
 
     return output_model
@@ -29,20 +27,23 @@ def test(model, model_info: ModelInfo):
 
     model = test_model(
         device,
-        model_info.model,
+        model,
         test_loader,
     )
 
     return model
 
 
-
 def main():
-    model = train(FINETUNING.model, FINETUNING)
-    test(model, FINETUNING)
+    print("actions")
+    print("[1]train [2]test")
 
-    print(model)
-    # train_model(device, FineTuning.model, FineTuning.transform)
+    choice = input()
+    if choice == '1':
+        model = train(FINETUNING.model, FINETUNING)
+    if choice == '2':
+        model = FINETUNING.load(FINETUNING_MODEL)
+        test(model, FINETUNING)
 
 
 if __name__ == "__main__":

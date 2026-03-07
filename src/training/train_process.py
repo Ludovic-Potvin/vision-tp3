@@ -1,4 +1,5 @@
 import plotly.express as px
+from datetime import datetime
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -24,9 +25,10 @@ SCORE_COLUMNS = [
 ]
 
 
-def train_model(device, model, train_loader, validation_loader):
+def train_model(device, model, train_loader, validation_loader, save_function):
     training_epoch_scores = pd.DataFrame(columns=SCORE_COLUMNS)
     validation_epoch_scores = pd.DataFrame(columns=SCORE_COLUMNS)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     # loss function
     loss_function = nn.CrossEntropyLoss()
@@ -77,6 +79,9 @@ def train_model(device, model, train_loader, validation_loader):
         validation_epoch_scores = validate_model(
             validation_loader, model, loss_function, device, validation_epoch_scores
         )
+
+        # Save model
+        save_function(model, timestamp, epoch)
 
     plot_score_graphs(training_epoch_scores, validation_epoch_scores)
     return model
@@ -153,6 +158,7 @@ def vec_to_int(y_true, y_predicted):
     y_true = y_true.astype(int)
     y_predicted = np.argmax(y_predicted, axis=1)
     return y_true, y_predicted
+
 
 def plot_score_graphs(training_epoch_scores, validation_epoch_scores):
     scores_to_plot = SCORE_COLUMNS

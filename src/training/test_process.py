@@ -2,7 +2,7 @@ import torch
 from sklearn.metrics import classification_report
 
 
-def test_model(model, device, test_loader):
+def test_model(device, model, test_loader):
     y_true = []
     y_predicted = []
 

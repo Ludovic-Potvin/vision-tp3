@@ -8,5 +8,7 @@ class ModelInfo:
     model: Any
     mean: Any
     std: Any
+    save: Any
+    load: Any
 
 
