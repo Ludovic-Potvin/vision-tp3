@@ -24,7 +24,7 @@ def load(file_name):
     return model
 
 
-FINETUNING = ModelInfo(
+CNN = ModelInfo(
     weights=None,
     model=model,
     mean=[0.5, 0.5, 0.5],

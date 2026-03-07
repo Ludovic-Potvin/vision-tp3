@@ -16,3 +16,4 @@ RESULT_PATH = os.path.join(_BASE_DIR, "results")
 
 # Models
 FINETUNING_MODEL = 'resnet50_20260307_115926_epoch20.pth'
+CNN_MODEL = 'TODO'

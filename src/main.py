@@ -1,10 +1,11 @@
 import torch
 
-from config import FINETUNING_MODEL
+from config import FINETUNING_MODEL, CNN_MODEL
 from training.setup import setup_sets_and_loader
 from training.train_process import train_model
 from training.test_process import test_model
 from models.finetuning import FINETUNING
+from models.cnn import CNN
 from models.model_info import ModelInfo
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -41,12 +42,16 @@ def main():
     choice = input()
     if choice == '1':
         model = train(FINETUNING.model, FINETUNING)
+    if choice == '2':
+        model = train(CNN.model, CNN)
     if choice == '3':
         print("== Fine Tuning Performance ==")
-        model = FINETUNING.load(FINETUNING_MODEL)
-        test(model, FINETUNING)
+        finetuning_model = FINETUNING.load(FINETUNING_MODEL)
+        test(finetuning_model, FINETUNING)
 
         print("== CNN architecture Performance ==")
+        cnn_model = CNN.load(CNN_MODEL)
+        test(cnn_model, CNN)
 
 
 if __name__ == "__main__":
