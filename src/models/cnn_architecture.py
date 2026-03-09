@@ -26,6 +26,7 @@ class CNNClassifier(nn.Module):
         self.fc1 = nn.Linear(128, 64)
         self.relufc1 = nn.ReLU()
 
+        self.dropout = nn.Dropout(p=0.2)
         self.fc2 = nn.Linear(64, 2)
 
     def forward(self, x):
@@ -52,6 +53,7 @@ class CNNClassifier(nn.Module):
         # Fc
         z5 = self.fc1(a4)
         a5 = self.relufc1(z5)
+        a5 = self.dropout(a5)
         y = self.fc2(a5)
 
         return y
