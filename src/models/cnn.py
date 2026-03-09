@@ -4,8 +4,8 @@ from datetime import datetime
 import torch
 
 from config import RESULT_PATH
-from model_info import ModelInfo
-from cnn_architecture import CNNClassifier
+from models.model_info import ModelInfo
+from models.cnn_architecture import CNNClassifier
 
 
 model = CNNClassifier()
