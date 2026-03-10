@@ -46,11 +46,11 @@ def main():
         model = train(CNN.model, CNN)
     if choice == '3':
         print("== Fine Tuning Performance ==")
-        finetuning_model = FINETUNING.load(FINETUNING_MODEL)
+        finetuning_model = FINETUNING.load(FINETUNING_MODEL, device)
         test(finetuning_model, FINETUNING)
 
         print("== CNN architecture Performance ==")
-        cnn_model = CNN.load(CNN_MODEL)
+        cnn_model = CNN.load(CNN_MODEL, device)
         test(cnn_model, CNN)
 
 

@@ -21,10 +21,10 @@ def save(model, timestamp, epoch):
     torch.save(model.state_dict(), os.path.join(RESULT_PATH, file_name))
 
 
-def load(file_name):
+def load(file_name, device):
     model = models.resnet50(weights=weights)
     model.fc = nn.Linear(model.fc.in_features, 2)
-    model.load_state_dict(torch.load(os.path.join(RESULT_PATH, file_name)))
+    model.load_state_dict(torch.load(os.path.join(RESULT_PATH, file_name), map_location=device))
     return model
 
 

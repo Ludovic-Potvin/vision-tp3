@@ -18,9 +18,9 @@ def save(model, timestamp, epoch):
     torch.save(model.state_dict(), os.path.join(RESULT_PATH, file_name))
 
 
-def load(file_name):
+def load(file_name, device):
     model = CNNClassifier()
-    model.load_state_dict(torch.load(os.path.join(RESULT_PATH, file_name)))
+    model.load_state_dict(torch.load(os.path.join(RESULT_PATH, file_name), map_location=device))
     return model
 
 
